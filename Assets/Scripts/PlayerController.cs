@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Leap;
 
 public class PlayerController : MonoBehaviour {
 
@@ -23,7 +22,6 @@ public class PlayerController : MonoBehaviour {
 
     //Scripts
     private AddAtoms addAtoms;
-    private Controller leapController;
 
     //Gameobjects & Transforms
     private GameObject molRoot;
@@ -32,24 +30,15 @@ public class PlayerController : MonoBehaviour {
     private Transform LeapHandControllerTransform;
     private Transform LeftHandObjectTransform;
     private Transform menuTransform;
-
-    //Leap Camera
-    private Hand leftHand;
-    private Hand rightHand;
-    private Frame currentFrame;
-    private Vector3 lastFramPosRH;
-    private Vector3 movementStart;
+    
     
 	void Start ()
 	{
-		leapController = new Controller ();
         addAtoms = gameObject.GetComponent<AddAtoms>();
         molRoot = GameObject.Find ("molRoot");
         molRootOffset = Vector3.zero;
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
         menuTransform = transform.FindChild("Menu");
-        LeapHandControllerTransform = transform.FindChild("LMHeadMountedRig/TrackingSpace/CenterEyeAnchor/HeadMount/LeapHandController");
-        LeftHandObjectTransform = LeapHandControllerTransform.FindChild("ImageFullLeftHand(Clone)/HandContainer");
 
         //Hide menu toggle if only 1 ligand is present
 
@@ -90,159 +79,11 @@ public class PlayerController : MonoBehaviour {
 	
 	void Update () 
 	{
-        if (LeftHandObjectTransform == null)
-        {
-            LeftHandObjectTransform = LeapHandControllerTransform.FindChild("ImageFullLeftHand(Clone)/HandContainer");
-        }
-        
-        currentFrame = leapController.Frame();
-
-        //Identify Hands
 
         if (molRoot != null)
         {
-            if (!currentFrame.Hands.IsEmpty)
-            {
-                if (currentFrame.Hands.Rightmost.IsRight)
-                {
-                    rightHand = currentFrame.Hands.Rightmost;
-                }
-                else if (currentFrame.Hands.Leftmost.IsRight)
-                {
-                    rightHand = currentFrame.Hands.Leftmost;
-                }
-                else
-                {
-                    rightHand = null;
-                }
-                if (currentFrame.Hands.Leftmost.IsLeft)
-                {
-                    leftHand = currentFrame.Hands.Leftmost;
-                }
-                else if (currentFrame.Hands.Rightmost.IsLeft)
-                {
-                    leftHand = currentFrame.Hands.Rightmost;
-                }
-                else
-                {
-                    leftHand = null;
-                }
-            }
-            else
-            {
-                rightHand = null;
-                leftHand = null;
-            }
 
             // Input
-
-            if (rightHand != null)
-            {
-                if (lastFramPosRH == null)
-                {
-                    lastFramPosRH = ToUnityAndVRAlign(rightHand.PalmPosition);
-                }
-
-                if (Input.GetKey("1") || Input.GetButton("Fire3")) //Rotate
-                {
-                    float xChange = Mathf.Abs(ToUnityAndVRAlign(rightHand.PalmPosition).x - lastFramPosRH.x);
-                    float yChange = Mathf.Abs(ToUnityAndVRAlign(rightHand.PalmPosition).y - lastFramPosRH.y);
-                    float zChange = Mathf.Abs(ToUnityAndVRAlign(rightHand.PalmPosition).z - lastFramPosRH.z);
-
-                    //Possible way of chanigng rotation speed based on distance from molRoot
-
-                    float changedRotationSpeed = rotationSpeed;
-
-                    if (rotationSpeedMultiplierByDistance > 0)
-                    {
-                        float distance = Vector3.Distance(transform.position, molRoot.transform.position);
-                        changedRotationSpeed = changedRotationSpeed = rotationSpeed * distance * 0.1f * rotationSpeedMultiplierByDistance;
-
-                    }
-                    
-                    {
-                        if (xChange > rotationSensitivity)
-                        {
-                            if (ToUnityAndVRAlign(rightHand.PalmPosition).x - lastFramPosRH.x < 0)
-                            {
-                                molRoot.transform.Rotate(Vector3.Scale(Vector3.forward, new Vector3(changedRotationSpeed, changedRotationSpeed, changedRotationSpeed)), Space.World);
-                            }
-                            else
-                            {
-                                molRoot.transform.Rotate(Vector3.Scale(Vector3.back, new Vector3(changedRotationSpeed, changedRotationSpeed, changedRotationSpeed)), Space.World);
-                            }
-                        }
-                        if (yChange > rotationSensitivity)
-                        {
-                            if (ToUnityAndVRAlign(rightHand.PalmPosition).y - lastFramPosRH.y < 0)
-                            {
-                                molRoot.transform.Rotate(Vector3.Scale(Vector3.left, new Vector3(changedRotationSpeed, changedRotationSpeed, changedRotationSpeed)), Space.World);
-                            }
-                            else
-                            {
-                                molRoot.transform.Rotate(Vector3.Scale(Vector3.right, new Vector3(changedRotationSpeed, changedRotationSpeed, changedRotationSpeed)), Space.World);
-                            }
-                        }
-                        if (zChange > rotationSensitivity)
-                        {
-                            if (ToUnityAndVRAlign(rightHand.PalmPosition).z - lastFramPosRH.z < 0)
-                            {
-                                molRoot.transform.Rotate(Vector3.Scale(Vector3.up, new Vector3(changedRotationSpeed, changedRotationSpeed, changedRotationSpeed)), Space.World);
-                            }
-                            else
-                            {
-                                molRoot.transform.Rotate(Vector3.Scale(Vector3.down, new Vector3(changedRotationSpeed, changedRotationSpeed, changedRotationSpeed)), Space.World);
-                            }
-                        }
-                    }
-                }
-
-                if (Input.GetKey("2") || Input.GetButton("Fire1")) // Transform
-                {
-                    if (Mathf.Abs(ToUnityAndVRAlign(rightHand.PalmPosition).x - lastFramPosRH.x) > transformSensitivity)
-                    {
-                        molRoot.transform.Translate((Vector3.Scale(ToUnityAndVRAlign(rightHand.PalmPosition) - lastFramPosRH, new Vector3(transformSpeed, transformSpeed, transformSpeed))), mainCamera);
-                    }
-                }
-
-                if (Input.GetKey("3") || Input.GetButton("Jump")) // User Move
-                {
-                    if (Input.GetKeyDown("3") || Input.GetButtonDown("Jump"))
-                    {
-                        movementStart = ToUnityAndVRAlign(rightHand.PalmPosition);
-                    }
-
-                    if (ToUnityAndVRAlign(rightHand.PalmPosition).x - movementStart.x > moveSensitivity)
-                    {
-                        transform.Translate(Vector3.Scale(Vector3.right, new Vector3(moveSpeed, moveSpeed, moveSpeed)), mainCamera);
-                    }
-                    else if (ToUnityAndVRAlign(rightHand.PalmPosition).x - movementStart.x < -moveSensitivity)
-                    {
-                        transform.Translate(Vector3.Scale(Vector3.left, new Vector3(moveSpeed, moveSpeed, moveSpeed)), mainCamera);
-                    }
-
-                    if (ToUnityAndVRAlign(rightHand.PalmPosition).y - movementStart.y > moveSensitivity)
-                    {
-                        transform.Translate(Vector3.Scale(Vector3.up, new Vector3(moveSpeed, moveSpeed, moveSpeed)), mainCamera);
-                    }
-                    else if (ToUnityAndVRAlign(rightHand.PalmPosition).y - movementStart.y < -moveSensitivity)
-                    {
-                        transform.Translate(Vector3.Scale(Vector3.down, new Vector3(moveSpeed, moveSpeed, moveSpeed)), mainCamera);
-                    }
-
-                    if (ToUnityAndVRAlign(rightHand.PalmPosition).z - movementStart.z > moveSensitivity)
-                    {
-                        transform.Translate(Vector3.Scale(Vector3.forward, new Vector3(moveSpeed, moveSpeed, moveSpeed)), mainCamera);
-                    }
-                    else if (ToUnityAndVRAlign(rightHand.PalmPosition).z - movementStart.z < -moveSensitivity)
-                    {
-                        transform.Translate(Vector3.Scale(Vector3.back, new Vector3(moveSpeed, moveSpeed, moveSpeed)), mainCamera);
-                    }
-                }
-
-                
-                lastFramPosRH = ToUnityAndVRAlign(rightHand.PalmPosition);
-            }
 
             if (Input.GetKey("4") || Input.GetButton("Fire2")) // Reset molroot
             {
@@ -338,9 +179,4 @@ public class PlayerController : MonoBehaviour {
         menuShowing = menuNumber;
     }
 
-    public Vector3 ToUnityAndVRAlign(Vector leapVector)
-    {
-        Vector3 unityVector = leapVector.ToUnity();
-        return new Vector3(-unityVector.x, unityVector.z, unityVector.y);
-    }
 }
