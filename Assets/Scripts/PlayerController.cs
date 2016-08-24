@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour {
 
@@ -14,7 +15,6 @@ public class PlayerController : MonoBehaviour {
 
     //Menu
     public Camera menuEnablingCamera;
-    private Vector3 menuInEnablingCameraView;
     public float menuDistanceFromHand = 0.13f;
     public int menuShowing = 0;
 
@@ -27,8 +27,6 @@ public class PlayerController : MonoBehaviour {
     private GameObject molRoot;
     private Vector3 molRootOffset;
     private Transform mainCamera;
-    private Transform LeapHandControllerTransform;
-    private Transform LeftHandObjectTransform;
     private Transform menuTransform;
     
     
@@ -124,41 +122,14 @@ public class PlayerController : MonoBehaviour {
 
             if (Input.GetKeyDown(KeyCode.X))
             {
-                Application.LoadLevel(0);
+                SceneManager.LoadScene(0);
             }
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 Application.Quit();
             }
-
-            //Menu
             
-            if (LeftHandObjectTransform != null)
-            {
-                menuTransform.position = (LeftHandObjectTransform.position);
-                menuTransform.Translate(Vector3.right * menuDistanceFromHand);
-                menuTransform.LookAt(2 * menuTransform.position - LeapHandControllerTransform.position);
-
-                menuInEnablingCameraView = menuEnablingCamera.WorldToViewportPoint(menuTransform.position);
-
-                if (menuInEnablingCameraView.x > 0 &&
-                    menuInEnablingCameraView.x < 1 &&
-                    menuInEnablingCameraView.y > 0 &&
-                    menuInEnablingCameraView.y < 1 &&
-                    menuInEnablingCameraView.z > 0.15)
-                {
-                    menuTransform.gameObject.SetActive(true);
-                }
-                else
-                {
-                    menuTransform.gameObject.SetActive(false);
-                }
-            }
-            else
-            {
-                menuTransform.gameObject.SetActive(false);
-            }
         }
     }
 

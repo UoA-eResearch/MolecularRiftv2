@@ -151,13 +151,12 @@ public class AddAtoms : MonoBehaviour
 
     // atom color scheme
     Dictionary<string, Color> atomColor = new Dictionary<string, Color> ();
-
-    private static IntPtr lib;
+    
 	
 	public void Awake ()
 	{
 		//reads the settings chosen in the launch menu
-		file = PlayerPrefs.GetString ("File");
+		file = PlayerPrefs.GetString("File");
 		proteinText = PlayerPrefs.GetString ("proteinText") == "True";
 		ligandText = PlayerPrefs.GetString ("ligandText") == "True";
 		HBondShowing = PlayerPrefs.GetString ("hBond") == "True";
