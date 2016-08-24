@@ -93,11 +93,11 @@ public class PopulateLigandMenu : MonoBehaviour {
                     buttonDataBinder.GetCurrentData();
                     if (addAtoms.LigandsShowing[buttonDataBinder.LigandIndex])
                     {
-                        buttonDataBinder.gameObject.transform.Find("Button").GetComponent<ButtonDemoToggle>().ButtonTurnsOn();
+                        //buttonDataBinder.gameObject.transform.Find("Button").GetComponent<ButtonDemoToggle>().ButtonTurnsOn();
                     }
                     else
                     {
-                        buttonDataBinder.gameObject.transform.Find("Button").GetComponent<ButtonDemoToggle>().ButtonTurnsOff();
+                        //buttonDataBinder.gameObject.transform.Find("Button").GetComponent<ButtonDemoToggle>().ButtonTurnsOff();
                     }
 
                     menuItems[i].transform.Find("TextCanvas/LigandText").GetComponent<UnityEngine.UI.Text>().text = "Ligand" + (page * itemsPerPage + i + 1).ToString();

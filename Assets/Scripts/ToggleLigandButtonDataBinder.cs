@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using LMWidgets;
 using System.Collections;
 
-public class ToggleLigandButtonDataBinder :  DataBinderToggle{
+public class ToggleLigandButtonDataBinder : MonoBehaviour
+{
 
     public int LigandIndex { get; set; }
     private AddAtoms addAtoms;
@@ -12,7 +12,7 @@ public class ToggleLigandButtonDataBinder :  DataBinderToggle{
     public Color LabelOnColor = new Color(0, 255, 255);
     public Color LabelOffColor = new Color(0, 128, 128);
 
-    override public bool GetCurrentData()
+    public bool GetCurrentData()
     {
         if (addAtoms == null)
         {
@@ -38,7 +38,7 @@ public class ToggleLigandButtonDataBinder :  DataBinderToggle{
         return value;
     }
 
-    override protected void setDataModel(bool value)
+    protected void setDataModel(bool value)
     {
         addAtoms.ToggleLigandDisplay(LigandIndex, value);
     }

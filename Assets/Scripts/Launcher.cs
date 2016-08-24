@@ -4,7 +4,7 @@ using UnityEngine.VR;
 using System.Collections;
 using System.IO;
 using System.Diagnostics;
-
+using UnityEngine.SceneManagement;
 
 public class Launcher : MonoBehaviour
 {
@@ -163,7 +163,7 @@ public class Launcher : MonoBehaviour
 		PlayerPrefs.SetString ("color4", colorToString (color4.color));
 
 		//launch MoleRift
-		Application.LoadLevel ("MolecularRift");
+		SceneManager.LoadScene("MolecularRift");
 	}
 	
 	private string colorToString (Color color)

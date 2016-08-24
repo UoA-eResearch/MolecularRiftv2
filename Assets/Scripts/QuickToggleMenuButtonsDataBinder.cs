@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
-using LMWidgets;
 
-public class QuickToggleMenuButtonsDataBinder : DataBinderToggle {
+public class QuickToggleMenuButtonsDataBinder : MonoBehaviour
+{
 
     public enum PropertiesToToggle
     {
@@ -16,7 +16,7 @@ public class QuickToggleMenuButtonsDataBinder : DataBinderToggle {
     public Color LabelOnColor = new Color(0,255,255);
     public Color LabelOffColor = new Color(0,128,128);
 
-    override public bool GetCurrentData()
+    public bool GetCurrentData()
     {
         if (addAtoms == null)
         {
@@ -73,7 +73,7 @@ public class QuickToggleMenuButtonsDataBinder : DataBinderToggle {
         return value;
     }
 
-    override protected void setDataModel(bool value)
+    protected void setDataModel(bool value)
     {
         if (addAtoms == null)
         {

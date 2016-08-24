@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
-using LMWidgets;
 using System.Collections;
 
-public class ToggleMenuButtonsDataBinder : DataBinderToggle {
+public class ToggleMenuButtonsDataBinder : MonoBehaviour
+{
 
     public int associatedMenu;
     private PlayerController playerController;
 
-    override public bool GetCurrentData()
+    public bool GetCurrentData()
     {
         if (playerController == null)
         {
@@ -16,7 +16,7 @@ public class ToggleMenuButtonsDataBinder : DataBinderToggle {
         return associatedMenu == playerController.menuShowing;
     }
 
-    override protected void setDataModel(bool value)
+    protected void setDataModel(bool value)
     {
         if (playerController == null)
         {
