@@ -29,5 +29,5 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
-# Data
-data_files
+# OS Stuff
+Thumbs.db
