@@ -233,8 +233,9 @@ public class AddAtoms : MonoBehaviour
 		
 		mol = new OBMol();
 		obconv.ReadFile(mol,file);
-        
-		if (hideHydrogens)
+        print(file + " has " + mol.NumAtoms() + " atoms");
+
+        if (hideHydrogens)
 			mol.DeleteHydrogens ();
 		else
 			mol.AddHydrogens ();
