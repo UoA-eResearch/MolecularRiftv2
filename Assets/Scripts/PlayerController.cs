@@ -38,23 +38,6 @@ public class PlayerController : MonoBehaviour {
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
         menuTransform = transform.FindChild("Menu");
 
-        //Hide menu toggle if only 1 ligand is present
-
-        if (addAtoms.CollectionOfLigands == null)
-        {
-            menuTransform.FindChild("ToggleMenuButtons").gameObject.SetActive(false);
-        }
-
-        menus = new GameObject[menuTransform.childCount - 1];
-
-        for (int i = 0; i < menus.Length; i++)
-        {
-            menus[i] = menuTransform.GetChild(i).gameObject;
-            menus[i].SetActive(false);
-        }
-
-        menus[menuShowing].SetActive(true);
-
         // Move children of molRoot to position molRoot origin in middle of ligand
         
         GameObject[] hetatms = GameObject.FindGameObjectsWithTag("hetatmbs");
@@ -83,31 +66,6 @@ public class PlayerController : MonoBehaviour {
 
             // Input
 
-            if (Input.GetKey("4") || Input.GetButton("Fire2")) // Reset molroot
-            {
-                molRoot.transform.position = (mainCamera.position + mainCamera.forward * 50) - molRootOffset;
-            }
-
-            if (Input.GetAxis("Vertical") > 0)
-            {
-                transform.Translate(Vector3.Scale(Vector3.forward, new Vector3(moveSpeed, moveSpeed, moveSpeed)), mainCamera);
-            }
-
-            if (Input.GetAxis("Vertical") < 0)
-            {
-                transform.Translate(Vector3.Scale(Vector3.back, new Vector3(moveSpeed, moveSpeed, moveSpeed)), mainCamera);
-            }
-
-            if (Input.GetAxis("Horizontal") > 0)
-            {
-                transform.Translate(Vector3.Scale(Vector3.right, new Vector3(moveSpeed, moveSpeed, moveSpeed)), mainCamera);
-            }
-
-            if (Input.GetAxis("Horizontal") < 0)
-            {
-                transform.Translate(Vector3.Scale(Vector3.left, new Vector3(moveSpeed, moveSpeed, moveSpeed)), mainCamera);
-            }
-
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 molRootOffset = transform.position - molRoot.transform.position;
@@ -129,7 +87,57 @@ public class PlayerController : MonoBehaviour {
             {
                 Application.Quit();
             }
+
             
+            
+            var leftI = SteamVR_Controller.GetDeviceIndex(SteamVR_Controller.DeviceRelation.Leftmost);
+            var rightI = SteamVR_Controller.GetDeviceIndex(SteamVR_Controller.DeviceRelation.Rightmost);
+            if (leftI == rightI)
+            {
+                // Single Controller
+                rightI = -1;
+            }
+
+            if (leftI != -1) {
+                var left = SteamVR_Controller.Input(leftI);
+                if (left.GetPressDown(SteamVR_Controller.ButtonMask.ApplicationMenu))
+                {
+                    left.TriggerHapticPulse(1000);
+                    if (menuTransform.gameObject.activeSelf)
+                    {
+                        menuTransform.gameObject.SetActive(false);
+                    }
+                    else
+                    {
+                        menuTransform.gameObject.SetActive(true);
+                        menuTransform.position = left.transform.pos;
+                        menuTransform.rotation = left.transform.rot;
+                        menuTransform.position += menuTransform.forward / 5;
+                        menuTransform.Rotate(Vector3.right * 45);
+                    }
+                } else if (left.GetPress(SteamVR_Controller.ButtonMask.Trigger))
+                {
+                    molRoot.transform.position += left.velocity;
+                    molRoot.transform.Rotate(left.angularVelocity);
+                } else if (left.GetPress(SteamVR_Controller.ButtonMask.Touchpad))
+                {
+                    var s = left.GetAxis().y;
+                    molRoot.transform.localScale += new Vector3(s, s, s);
+                }
+            }
+
+            if (rightI != -1)
+            {
+                var right = SteamVR_Controller.Input(rightI);
+                if (right.GetPressDown(SteamVR_Controller.ButtonMask.ApplicationMenu))
+                {
+                    Debug.Log("rsys");
+                }
+                else if (right.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
+                {
+                    Debug.Log("rtrig");
+                }
+            }
         }
     }
 

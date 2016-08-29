@@ -13,21 +13,31 @@ public class QuickToggleMenuButtonsDataBinder : MonoBehaviour
     public PropertiesToToggle propertyToggled;
     public GameObject TextLabel;
     private UnityEngine.UI.Text Text;
-    public Color LabelOnColor = new Color(0,255,255);
-    public Color LabelOffColor = new Color(0,128,128);
+    private Color LabelOnColor = new Color(255,255,255);
+    private Color LabelOffColor = new Color(128,0,0);
+
+    void Start()
+    {
+        Text = GetComponent<UnityEngine.UI.Text>();
+        addAtoms = transform.root.GetComponent<AddAtoms>();
+    }
+
+    void OnTriggerEnter(Collider col)
+    {
+        bool current = GetCurrentData();
+        bool new_value = !current;
+        setDataModel(new_value);
+        if (new_value)
+        {
+            Text.color = LabelOnColor;
+        } else
+        {
+            Text.color = LabelOffColor;
+        }
+    }
 
     public bool GetCurrentData()
     {
-        if (addAtoms == null)
-        {
-            addAtoms = transform.parent.parent.parent.gameObject.GetComponent<AddAtoms>();
-        }
-
-        if (Text == null)
-        {
-            Text = TextLabel.GetComponent<UnityEngine.UI.Text>();
-        }
-
         bool value = false;
 
         switch (propertyToggled)
@@ -60,25 +70,11 @@ public class QuickToggleMenuButtonsDataBinder : MonoBehaviour
                 value = addAtoms.hetatmStick || addAtoms.hetatmBS;
                 break;
         }
-
-        if (value)
-        {
-            Text.color = LabelOnColor;
-        }
-        else
-        {
-            Text.color = LabelOffColor;
-        }
-
         return value;
     }
 
     protected void setDataModel(bool value)
     {
-        if (addAtoms == null)
-        {
-            addAtoms = transform.parent.parent.gameObject.GetComponent<AddAtoms>();
-        }
 
         switch (propertyToggled)
         {
