@@ -124,7 +124,9 @@ public class PlayerController : MonoBehaviour {
                     }
                 } else if (left.GetPress(SteamVR_Controller.ButtonMask.Trigger))
                 {
-                    molRoot.transform.position += left.velocity;
+                    var v = left.velocity;
+                    v.Scale(molRoot.transform.localScale);
+                    molRoot.transform.position += v;
                     molRoot.transform.Rotate(left.angularVelocity);
                 } else if (left.GetPress(SteamVR_Controller.ButtonMask.Touchpad))
                 {
