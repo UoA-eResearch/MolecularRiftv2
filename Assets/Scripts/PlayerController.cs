@@ -54,8 +54,15 @@ public class PlayerController : MonoBehaviour {
         foreach (Transform child in molRoot.transform)
         {
             child.localPosition -= offset;
-        } 
-        
+        }
+
+        StartCoroutine(LateStart());
+    }
+
+    IEnumerator LateStart()
+    {
+        yield return new WaitForSeconds(0.5f);
+        menuTransform.gameObject.SetActive(false);
     }
 	
 	void Update () 
