@@ -122,7 +122,12 @@ public class PlayerController : MonoBehaviour {
                 } else if (left.GetPress(SteamVR_Controller.ButtonMask.Touchpad))
                 {
                     var s = left.GetAxis().y;
-                    molRoot.transform.localScale += new Vector3(s, s, s);
+                    float scale = 1.02f;
+                    if (s < 0)
+                    {
+                        scale = .98f;
+                    }
+                    molRoot.transform.localScale *= scale;
                 }
             }
 
