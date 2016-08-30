@@ -122,13 +122,15 @@ public class PlayerController : MonoBehaviour {
                         menuTransform.position += menuTransform.forward / 5;
                         menuTransform.Rotate(Vector3.right * 45);
                     }
-                } else if (left.GetPress(SteamVR_Controller.ButtonMask.Trigger))
+                }
+                if (left.GetPress(SteamVR_Controller.ButtonMask.Trigger))
                 {
                     var v = left.velocity;
                     v.Scale(molRoot.transform.localScale);
                     molRoot.transform.position += v;
-                    molRoot.transform.Rotate(left.angularVelocity);
-                } else if (left.GetPress(SteamVR_Controller.ButtonMask.Touchpad))
+                    molRoot.transform.Rotate(left.angularVelocity, Space.World);
+                }
+                if (left.GetPress(SteamVR_Controller.ButtonMask.Touchpad))
                 {
                     var s = left.GetAxis().y;
                     float scale = 1.02f;
