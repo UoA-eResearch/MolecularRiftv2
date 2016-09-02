@@ -73,6 +73,7 @@ public class AddAtoms : MonoBehaviour
 	// for drawing ribbons
 	protected TubeRenderer tubeRenderer;
 	public GameObject RibbonHolder;
+	private int multiplier = 50; //how many points we extract between each control point
 
 	// for drawing molecular surfaces
 	protected SurfaceSphere surfaceSphere;
@@ -290,6 +291,12 @@ public class AddAtoms : MonoBehaviour
 
 		int numAtoms = (int)mol.NumAtoms()+1;
 
+		if (numAtoms > 5000)
+		{
+			// Large model - simplify ribbons
+			multiplier = 1;
+		}
+
 
 		atoms = new GameObject[numAtoms];
 
@@ -414,7 +421,7 @@ public class AddAtoms : MonoBehaviour
 						double torsion = mol.GetTorsion(atom,alphaCarbons[alphaCarbonCount-1],alphaCarbons[alphaCarbonCount-2],alphaCarbons[alphaCarbonCount-3]);
 						double prevTorsion = mol.GetTorsion(alphaCarbons[alphaCarbonCount-4],alphaCarbons[alphaCarbonCount-5],alphaCarbons[alphaCarbonCount-6],alphaCarbons[alphaCarbonCount-7]);
 						double torsionSum = torsion+prevTorsion;
-						if(torsionSum>99 && torsionSum<111){ 
+						if (torsionSum>99 && torsionSum<111 && ribbonChainIndex > 7) {
 							for(int j=ribbonChainIndex-7; j<=ribbonChainIndex; j++){
 								radius [currentChain, j] = 1.5f;	//alpha helix
 							}
@@ -658,7 +665,6 @@ public class AddAtoms : MonoBehaviour
 	void drawRibbons (BezierSpline[] splineList, string tag)
 	{
 		resetColors ();
-		int multiplier = 50; //how many points we extract between each control point
 		Color color1 = new Color ();
 		Color color2 = new Color ();
 		int sum = 0;
