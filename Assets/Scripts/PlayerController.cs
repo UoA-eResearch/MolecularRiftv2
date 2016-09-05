@@ -37,24 +37,7 @@ public class PlayerController : MonoBehaviour {
         molRootOffset = Vector3.zero;
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
         menuTransform = transform.FindChild("Menu");
-
-        // Move children of molRoot to position molRoot origin in middle of ligand
-        
-        GameObject[] hetatms = GameObject.FindGameObjectsWithTag("hetatmbs");
-
-        Vector3 sumOfPos = Vector3.zero;
-
-        for (int i = 0; i < hetatms.Length; i++)
-        {
-            sumOfPos += hetatms[i].transform.localPosition;
-        }
-
-        Vector3 offset = sumOfPos / hetatms.Length;
-
-        foreach (Transform child in molRoot.transform)
-        {
-            child.localPosition -= offset;
-        }
+		
 
         StartCoroutine(LateStart());
     }
