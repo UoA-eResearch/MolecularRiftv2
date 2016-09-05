@@ -76,6 +76,8 @@ public class Launcher : MonoBehaviour
 		else
 			molData = dataSource2.text;
 
+		PlayerPrefs.SetString("ColorFile", colorSource.text);
+
 		if (molData.Length == 4) { //internet
 
 			//running external script
@@ -91,7 +93,6 @@ public class Launcher : MonoBehaviour
 
 			process.WaitForExit ();
 			PlayerPrefs.SetString ("File", "pdb.pdb");
-			PlayerPrefs.SetString ("ColorFile", colorSource.text);
 
 			Launch ();
 
