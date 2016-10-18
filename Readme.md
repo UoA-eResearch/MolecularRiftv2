@@ -1,35 +1,28 @@
-<h3>Molecular Rift is a Virtual Reality Tool for Drug Designers</h3>
-by Magnus Norrby, Jonatan Enström, Christoph Grebner and Jonas Boström at AstraZeneca CVMD Sweden 
+<h3>Molecular Vive is a Virtual Reality Tool for Drug Designers</h3>
+Original Rift version by Magnus Norrby, Jonatan Enström, Christoph Grebner and Jonas Boström at AstraZeneca CVMD Sweden 
 Contact details: dr.jonas.bostrom@gmail.com
 
-Launch the program using MolecularRift2VR.exe or MolecularRift2AR.exe
+Adapted for the Vive by Nick Young at the Centre for eResearch, University of Auckland
+Contact details: nick.young@auckland.ac.nz
+
+Launch the program using MolecularVive.exe
 
 <h3>Controls</h3>
 
-Hand / Controller:
-* Rotate - hold 1 / Joy-button 2 + Right hand movement
-* Move transform - hold 2 / Joy-button 0 + Right hand movement
-* Move self - hold 3 / Joy-button 3 + Move and hold right hand in desired direction
-* Reset - 4 / Joy-button 1
+Controller:
+* Hold trigger and rotate or translate the controller to rotate/translate the model in the same way
+* Press touchpad up or down to scale up or down
+* Press application menu button (the one above the touchpad) to bring up a menu - then touch the menu items with the controller to show or hide model elements
 
 Keyboard:
-* Move Forward - W
-* Move Backward - S
-* Move Left - A
-* Move Right - D
-* Set tranform origin at user - Enter
 * Restart - x
 * Screenshot - F8
 * Close - Esc
 
-<h3>Minimum requirements for running Molecular Rift:</h3>
-* Oculus Rift Head Mount Display DK 2
-* Oculus Positional Tracker DK 2
-* Oculus Runtime SDK 0.8.0.0
-* Leap Motion
-* Leap Motion SDK 2.3.1
-* Unity v5.3.0 
-* OpenBabel
+<h3>Minimum requirements for running Molecular Vive:</h3>
+* HTC Vive
+* SteamVR
+
 * PC with:  
 * Windows 8 or Windows 10 (x64) 
 * 1x USB 3.0 
@@ -40,3 +33,6 @@ Keyboard:
 
 <h3>Optional</h3>
 * Universal Wireless Remote Controller / Gamepad
+
+![Screenshot](screenshots/screen_2400x2160_2016-10-19_11-17-43.png)
+![Screenshot](screenshots/screen_2400x2160_2016-10-19_11-18-52.png)
