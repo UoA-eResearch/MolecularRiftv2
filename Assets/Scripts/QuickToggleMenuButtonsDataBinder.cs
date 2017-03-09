@@ -13,8 +13,8 @@ public class QuickToggleMenuButtonsDataBinder : MonoBehaviour
     public PropertiesToToggle propertyToggled;
     public GameObject TextLabel;
     private UnityEngine.UI.Text Text;
-    private Color LabelOnColor = new Color(255,255,255);
-    private Color LabelOffColor = new Color(128,0,0);
+    private Color LabelOnColor = Color.white;
+    private Color LabelOffColor = Color.red;
 
     void Start()
     {
