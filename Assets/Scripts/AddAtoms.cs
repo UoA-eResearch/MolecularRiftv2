@@ -224,7 +224,7 @@ public class AddAtoms : MonoBehaviour
 
 		OpenBabel.OBConversion obconv = new OBConversion();
 
-		extension = file.Split ('.')[1];
+		extension = Path.GetExtension(file).TrimStart('.');
 		if(extension=="pdb")
 			obconv.SetInFormat("PDB");
 		else if(extension=="sdf")

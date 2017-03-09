@@ -98,7 +98,7 @@ public class Launcher : MonoBehaviour
 
 
 		} else if (File.Exists (molData)) { //local file
-			string extension = molData.Split ('.')[1];
+			string extension = Path.GetExtension(molData).TrimStart('.');
 			if (extension == "pdb" || extension == "sdf" || extension == "mol2") {
 				PlayerPrefs.SetString ("File", molData);
 				Launch ();
